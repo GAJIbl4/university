@@ -33,7 +33,7 @@ void freeRes() {
 			Form2->sg_res->Cells[j][i] = "";
 }
 
-void __fastcall TForm2::bt_clearClick(TObject *Sender) //ÐºÐ½Ð¾Ð¿ÐºÐ° "ÑœÑ‡Ð¸ÑÑ‚Ð¸Ñ‚ÑŒ"
+void __fastcall TForm2::bt_clearClick(TObject *Sender) //êíîïêà "Î÷èñòèòü"
 {
 	ed_c->Clear(); ed_d->Clear(); ed_eps->Clear();
 	ed_xn->Clear(); ed_n->Clear(); ed_dx->Clear();
