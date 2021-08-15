@@ -1,0 +1,150 @@
+unit Unit1;
+
+interface
+
+uses
+  Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants,
+  System.Classes, Vcl.Graphics,
+  Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.StdCtrls, Vcl.Grids,
+  Vcl.Imaging.pngimage, Vcl.ExtCtrls;
+
+type
+  TForm1 = class(TForm)
+    Edit1: TEdit;
+    Edit2: TEdit;
+    Edit3: TEdit;
+    Edit4: TEdit;
+    Edit5: TEdit;
+    Button1: TButton;
+    Button2: TButton;
+    Button3: TButton;
+    StringGrid1: TStringGrid;
+    Label1: TLabel;
+    Label2: TLabel;
+    Label3: TLabel;
+    Label4: TLabel;
+    Label5: TLabel;
+    Label6: TLabel;
+    Label7: TLabel;
+    Label8: TLabel;
+    Image1: TImage;
+    procedure Button1Click(Sender: TObject);
+    procedure Button3Click(Sender: TObject);
+    procedure Button2Click(Sender: TObject);
+  private
+    { Private declarations }
+  public
+    { Public declarations }
+  end;
+
+var
+  Form1: TForm1;
+
+implementation
+
+{$R *.dfm}
+
+const
+  N = 100;
+
+type
+  Tx = array [1 .. N] of real;
+  Ter = array [1 .. N] of integer;
+
+var
+  X, S: Tx;
+  Er2: Ter;
+  I, Er, Km, M: integer;
+  Eps, Xn, Xk, Dx, Xt: real;
+
+procedure Series(X1: real; Km: integer; Eps: real; var S1: real;
+  var Er: integer);
+var
+  R: real;
+  I: integer;
+begin
+  S1 := 0;
+  R := X1;
+  Er := 1;
+  I := 1;
+  repeat
+  begin
+    S1 := S1 + R;
+    R := R * -X1 * X1 / ((4 * I * I) + (2 * I));
+    if abs(R) < Eps then
+    begin
+      I := Km;
+      Er := Er - 1;
+    end;
+    Inc(I);
+  end;
+  until I > Km;
+end;
+
+Procedure RezOut(M: integer; Er2: Ter; var X, S: Tx; var Eps: real);
+var
+  I: integer;
+  begin
+  with Form1.StringGrid1
+  do
+  begin
+  Cells[0, 0] := 'X';
+  Cells[1, 0] := 'Y';
+  Cells[2, 0] := 'Тест';
+  Cells[3, 0] := 'Погрешность';
+  for I := 1 to M do
+  begin
+    if Er2[I] = 1 then
+      Form1.StringGrid1.Cells[1, I] := 'ERROR'
+    else
+    begin
+      Cells[0, I] := FloatToStrF(X[I],ffgeneral,6,2);
+      Cells[1, I] := FloatToStrF(S[I],ffgeneral,6,2);
+      Cells[2, I] := FloatToStrF(sin(X[I]),ffgeneral,6,2);
+      Cells[3, I] := FloatToStrF(StrToFloat(Cells[2,i])-StrToFloat(Cells[1,i]),ffFixed,6,6);
+    end;
+  end;
+end;
+end;
+
+procedure TForm1.Button2Click(Sender: TObject);
+var
+  I, J: integer;
+begin
+  Edit1.Text := '';
+  Edit2.Text := '';
+  Edit3.Text := '';
+  Edit4.Text := '';
+  Edit5.Text := '';
+
+  for J := 1 to StringGrid1.RowCount do
+  StringGrid1.Rows[J].Clear;
+end;
+
+procedure TForm1.Button3Click(Sender: TObject);
+begin
+  close;
+end;
+
+procedure TForm1.Button1Click(Sender: TObject);
+begin
+  Km := StrToInt(Edit1.Text);
+  Eps := StrToFloat(Edit2.Text);
+  Xn := StrToFloat(Edit3.Text);
+  Xk := StrToFloat(Edit4.Text);
+  Dx := StrToFloat(Edit5.Text);
+  I := 1;
+  Xt := Xn;
+  while Xt <= Xk do
+  begin
+    Series(Xt, Km, Eps, S[I], Er2[I]);
+    X[I] := Xt;
+    Xt := Xt + Dx;
+    Inc(I);
+  end;
+  M := trunc((Xk - Xn) / Dx + 1);
+  Form1.StringGrid1.RowCount := M + 1;
+  RezOut(M, Er2, X, S, Eps);
+end;
+
+end.
