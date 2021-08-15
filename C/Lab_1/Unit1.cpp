@@ -16,7 +16,7 @@ __fastcall TForm1::TForm1(TComponent* Owner) : TForm(Owner) {
 
 // ---------------------------------------------------------------------------
 
-void __fastcall TForm1::Button1Click(TObject *Sender) {   //Р Р°РЅРґРѕРј
+void __fastcall TForm1::Button1Click(TObject *Sender) {   //Рандом
 	int i, j;
 	for (i = 0; i < 7; i++) {
 		for (j = 0; j < 7; j++) {
@@ -35,7 +35,7 @@ for (int i = 0; i < 7; i++) {
 }
 
 // ---------------------------------------------------------------------------
-void __fastcall TForm1::Button2Click(TObject *Sender) {   //Р’С‹РїРѕР»РЅРёС‚СЊ
+void __fastcall TForm1::Button2Click(TObject *Sender) {   //Выполнить
 	float A[7][7];
 	float Max=A[0][0];
 
